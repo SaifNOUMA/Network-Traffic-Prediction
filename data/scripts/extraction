@@ -1,0 +1,10 @@
+#!/bin/sh
+
+for file in *.pcap
+do
+	FILE=${file%%.*}
+	echo "Traitement du fichier : " $file
+	tshark -r $file -T fields -e frame.time_epoch -e frame.len >> data
+#	awk '{ print $1-1037905200 $2}' data >> final_data
+done
+

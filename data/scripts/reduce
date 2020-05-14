@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# argument : $1 : The file that Contain the data which represent the trace per packets where each row contains the arrival time (seconds) and the length (bytes)
+# argument : $2 : The granularity of the final data which is the timestep
+
+name_fdata=fdata_Timestep_$2
+awk -v granularity=$2 -f sum_up.awk $1 > $name_fdata

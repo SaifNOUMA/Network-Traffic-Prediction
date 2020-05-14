@@ -1,0 +1,39 @@
+!/bin/sh
+#SBATCH --job-name=Traffic Prediction               # Nom du Job
+#SBATCH --ntasks=20                       # Nombre de Tasks : 3
+#SBATCH --cpus-per-task=1                # Allocation de 4 CPU par Task
+
+#SBATCH --mail-type=ALL                  # Notification par mail des évènements concernant le job : début d’exécution, fin,…
+#SBATCH --mail-user=senouma@laas.fr
+
+# Jobs Steps (étapes du Job) :
+
+# Step 1 : Préparation
+srun -N1 -n1 --exclusive python init.py
+
+# Les 3 Steps suivants sont les 3 processus d'encodage ffmpeg exécutés en parallèle.
+
+
+
+for t in 1 60
+do
+    for (( i=10 ; i<=200 ; i+=5 ))
+    do
+        for ((j=20; j<=200; j+=5 ))
+        do
+            for ((k=20; k<=200 ; k+=5))
+            do
+                for ((h=20; h<=200 ; h+=5))
+                do
+                   srun -N1 -n1 --exclusive -J lstm.lb_$i.la_$j.n1_$k.n2_$h.timestep_$t python ../main/lstm.py $i $j $k $h $t &
+                   srun -N1 -n1 --exclusive -J gru.lb_$i.la_$j.n1_$k.n2_$h.timestep_$t python ../main/gru.py $i $j $k $h $t &
+
+                done
+            done
+        done
+        srun -N1 -n1 --exclusive -J svr.lb_$i.timestep_$t  python ../main/svr.py $lb $t &
+    done
+done
+
+wait      # Attendre la fin des processus "enfants" (Steps) avant de terminer le processus parent (Job).
+
