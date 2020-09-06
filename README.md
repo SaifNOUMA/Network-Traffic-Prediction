@@ -12,7 +12,9 @@ chosen model with a baseline model named Support Vector Regression (SVR).
 >In order to implement a predictive model, there is always a mandatory step which is choosing the right data set for both training and evaluation. In fact, we have used a real traffic data
 taken from the University of Leipzig Internet access link [1]. A pair of DAG 3.2 cards were used to monitor network traffic from campus network to the German research network (G-WiN). A
 diagram of the configuration is illustrated in figure below:
+
 > <img src="./images/network_configuration.png" width=400>
+
 >After selecting the data source, we have chosen the traffic that is directed from the German research network to the campus network with a duration of 4 days and 18 hours. Thus, all
 outer connections pass through this measurement point.
 In addition, all non-IP traffic has been removed, and only TCP, UDP and ICMP traffic are kept in the traces. Then, all IP addresses have been anonymised using one-to-one mapping into
@@ -24,6 +26,7 @@ packets in PCAP format. The network traffic captured 3429 million packets over 4
 Hence, we processed the data in order to transform it into a time series that represents the length of packets at each minute. This resulted in a time series containing 6839 values as
 illustrated in the figure below. This part of the process was done using Bash scripts in order to optimize the execution time.
 Indeed, this data was sufficient to implement our network traffic prediction because we notice that it’s about a periodic curve where the long term regularities are evident.
+
 <img src="./images/network_traffic.png" width=400>
 
 > ### 3. Data Normalization:
@@ -91,3 +94,40 @@ indicator of the proposed models.
 >Based on this primary run, it appears that GRU model outperform the LSTM model in the test subset. An interesting finding that stimulates a study of the fine tuning
  process in order to determine the most reliable model for network traffic prediction task.
 
+> ### 3. Fine Tuning:
+>Throughout this section, we will try to refine the hyper parameters of the forecasting models
+in order to improve the accuracy. Indeed, we conducted our optimization using Grid Search
+approach. This latter performs every conceivable combination of the Hyper Parameters. As a
+result, it necessitate a massive computation in order to complete the task.
+Hence, we define a grid of n dimensions where each dimension represents a Hyper Parameter.
+In our case, n = (Step Back, Step Ahead, Number of Neurons in the Encoder layers, Number
+of Neurons in the Decoder layers).
+The table below demonstrate the range of possible values that the Hyper Parameters
+could receive.
+
+> <img src="./images/config_hyperparameters.png" width=500>
+
+>As a consequence, we search for all the possible configurations. As we can see, with more
+dimensions, the more time-consuming the search will be. In our case, we have around 6500
+combinations for the Hyper Parameters. This means that we have to train the predictive models
+6500 times.
+In order to compensate this huge computation, we have run the Fine Tuning process on the
+LAAS computing platform. This latter contains 228 cores and 1.6 TB of RAM spread over 7
+machines. This cluster is primarily designed for distributed computing. Hence, all the tasks
+are executed using the resource manager SLURM.
+Thanks to this platform, the Hyper Parameters Tuning process took about 24 hours to
+complete. Hence, we have found interesting insights as illustrated in the table below:
+
+> <img src="./images/FineTuning_Results.png" width=500>
+
+>In the first rows, we find that GRU model has achieved the best MAPE metric for around
+3%. Then, the first LSTM model is ranked 16 with a MAPE equals to 3.18%. The baseline
+model SVR has achieved a MAPE equals to 6.06% as the highest result from all the possible
+combinations and it is ranked 4281 in the Fine Tuning process.
+
+> ## Conclusion:
+>In this work, we reviewed the current state of the art for DL on the network traffic prediction.
+We have shown that GRU is well suited for network traffic prediction. We have proposed a data
+preprocessing, RNN feeding technique that achieves high predictions within few milliseconds of
+computation. The fine tuning process has shown that GRU outperforms classical ML algorithm
+and the LSTM model with several orders of magintude.
