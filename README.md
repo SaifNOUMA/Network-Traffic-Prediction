@@ -81,11 +81,12 @@ Then, The proposed models were trained on the training set with the following Hy
 >For evalutation purpose, the mean absolute percentage error (MAPE) is used as the evaluation
 indicator of the proposed models.
 >Indeed, we have found accurate results from our primary test. The mean absolute percentage errors of the two RNN models on the test set are shown in the table below:
+
 > <img src="./images/mape_values.png" width=200>
 
 >The figures below show the difference between predicted values and the actual times series for both GRU and LSTM models.
 
-> <img src="./images/resutls_rnn.png" width=700>
+> <img src="./images/resutls_rnn.png" width=500>
 
 >Based on this primary run, it appears that GRU model outperform the LSTM model in the test subset. An interesting finding that stimulates a study of the fine tuning
  process in order to determine the most reliable model for network traffic prediction task.
