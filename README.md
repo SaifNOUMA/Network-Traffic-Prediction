@@ -24,7 +24,7 @@ packets in PCAP format. The network traffic captured 3429 million packets over 4
 Hence, we processed the data in order to transform it into a time series that represents the length of packets at each minute. This resulted in a time series containing 6839 values as
 illustrated in the figure below. This part of the process was done using Bash scripts in order to optimize the execution time.
 Indeed, this data was sufficient to implement our network traffic prediction because we notice that it’s about a periodic curve where the long term regularities are evident.
-![GitHub Logo](./images/network_traffic.png)
+<img src="./images/network_traffic.png" width=400>
 
 > ### 3. Data Normalization:
 >Training of ML algorithms often performs better with standardized input data. In fact, normalizing features is not only essential for comparing features with different scales, it is a
@@ -33,7 +33,7 @@ as feature values plays a role in updating weights.
 Hence, we apply the Gaussian transformation (i.e. subtracting the mean and dividing by the standard deviation).
 
 > ## 4. Data Transformation:
-Time Series prediction requires a set of past observations in order to estimate future values of the features of interest. Actually, there are mainly two categories as explained below:
+>Time Series prediction requires a set of past observations in order to estimate future values of the features of interest. Actually, there are mainly two categories as explained below:
 * **One-Step Prediction**:
 The most straightforward strategy is one step prediction which is about taking a vector that include the last observations as input to the model responsible for yielding the
 prediction. Specifically, for a set of samples observed at times t0; t1; ...; tn, the value at time tn+1 is estimated.
