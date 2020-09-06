@@ -42,20 +42,50 @@ Multi-Step Prediction is about predicting upper than one step ahead based on the
 historical samples. Specifically, for a set of samples observed at times t0; t1; ...; tn, the values at time tn+1; tn+2; ...; tn+m are estimated.
 
 > ## Training and Evaluation:
+> ### 1. Modeling Phase:
 >At first, the data set was divided into two parts, as indicated below, using Test-Set Validation technique which is the most basic strategy for estimating the reliability and the robustness
 of the predictive models. Indeed, we split the data into two separate portions:
 >* **Training Set:** It contains 80% of the original data. Hence, this portion will be used for
 training the predictive models.
 >* **Test Set:** It contains 20% of the original data. Hence, the fitted models will be validated
 on the Test Set.
+
 >Then, we turn our focus on the model architecture of each forecasting model.
 We have used two variants of RNN:
 >* Long Short Term Memory (LSTM)
 >* Gate Recurrent Unit (GRU)
+
 >The proposed architecture of the two RNN variants has the same number of layers as depicted
 below:
 >* **Encoder:** The encoder consists of a single layer containing 16 (LSTM / GRU) neurons.
 >Indeed, it is responsible for encoding the time series to the state of the network.
 > * **Decoder:** The decoder consists of four consecutive layers where each layer contain by default 8 (LSTM / GRU) neurons. This will decode the encoding vector in order to generate the output sequence.
+
 >In order to set the optimal weights of the chosen RNN models and minimize the error rate between the actual output and the predicted sequence, a loss function is required. In the
 literature, the most used loss function for regression problems is Mean Squared Error (MSE).
+
+> ### 2.Training of the Predictive Models: 
+>We have picked out RMSProp as an optimizer for updating the NN weights in the Gradient Descent algorithm. The selection was actually based on a rigorous benchmark of three optimizers
+(SGD, RMSProp and AdaGrad).
+Then, The proposed models were trained on the training set with the following Hyperparameters (Randomly Chosen):
+>* Time Granularity: 1 minute.
+>* Step Back: 60
+>* Step Ahead: 20
+>* Encoder: Composed of one single (LSTM/GRU) layer that contains 16 neurons.
+>* Decoder: Composed of four (LSTM/GRU) layers that contains respectively 8, 8, 16, 16 neurons.
+>* Epochs: 1000
+>* Batch Size: 10
+>* Loss Function: Mean Squared Error (MSE)
+>* Optimizer: RMSProp
+
+>For evalutation purpose, the mean absolute percentage error (MAPE) is used as the evaluation
+indicator of the proposed models.
+>Indeed, we have found accurate results from our primary test. The mean absolute percentage errors of the two RNN models on the test set are shown in the table below:
+> <img src="./images/mape_values.png" width=400>
+
+>The figures below show the difference between predicted values and the actual times series for both GRU and LSTM models.
+> <img src="./images/results_rnn.png" width=400>
+
+>Based on this primary run, it appears that GRU model outperform the LSTM model in the test subset. An interesting finding that stimulates a study of the fine tuning
+ process in order to determine the most reliable model for network traffic prediction task.
+
