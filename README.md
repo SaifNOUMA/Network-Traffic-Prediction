@@ -12,7 +12,7 @@ chosen model with a baseline model named Support Vector Regression (SVR).
 >In order to implement a predictive model, there is always a mandatory step which is choosing the right data set for both training and evaluation. In fact, we have used a real traffic data
 taken from the University of Leipzig Internet access link [1]. A pair of DAG 3.2 cards were used to monitor network traffic from campus network to the German research network (G-WiN). A
 diagram of the configuration is illustrated in figure below:
-![GitHub Logo](./images/network_configuration.png)
+<img src="./images/network_configuration.png" width=400>
 After selecting the data source, we have chosen the traffic that is directed from the German research network to the campus network with a duration of 4 days and 18 hours. Thus, all
 outer connections pass through this measurement point.
 In addition, all non-IP traffic has been removed, and only TCP, UDP and ICMP traffic are kept in the traces. Then, all IP addresses have been anonymised using one-to-one mapping into
