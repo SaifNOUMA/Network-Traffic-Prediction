@@ -84,7 +84,7 @@ indicator of the proposed models.
 > <img src="./images/mape_values.png" width=400>
 
 >The figures below show the difference between predicted values and the actual times series for both GRU and LSTM models.
-> <img src="./images/results_rnn.png" width=400>
+> <img src="./images/resutls_rnn.png" width=400>
 
 >Based on this primary run, it appears that GRU model outperform the LSTM model in the test subset. An interesting finding that stimulates a study of the fine tuning
  process in order to determine the most reliable model for network traffic prediction task.
